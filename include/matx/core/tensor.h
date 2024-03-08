@@ -653,7 +653,7 @@ public:
 
     // Copy descriptor and call ctor with shape
     Desc new_desc{std::forward<Shape>(shape)};
-    return tensor_t<M, R, Storage, Desc>{storage_, std::move(new_desc), this->Data()};
+    return tensor_t<M, R, Storage, Desc>{storage_, std::move(new_desc), (M*)this->Data()};
   }
 
   /**
