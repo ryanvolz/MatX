@@ -658,11 +658,6 @@ public:
   {
     MATX_NVTX_START("", matx::MATX_NVTX_LOG_API)
 
-    // Ensure new shape's total size is not larger than the original
-    MATX_ASSERT_STR(
-        sizeof(M) * shape.TotalSize() <= storage_.Bytes(), matxInvalidSize,
-        "Total size of new tensor must not be larger than the original");
-
     // This could be loosened up to make sure only the fastest changing dims
     // are compact
     MATX_ASSERT_STR(this->desc_.IsContiguous(), matxInvalidSize,
@@ -670,6 +665,10 @@ public:
 
     // Copy descriptor and call ctor with shape
     Desc new_desc{std::forward<Shape>(shape)};
+    // Ensure new shape's total size is not larger than the original
+    MATX_ASSERT_STR(
+        sizeof(M) * new_desc.TotalSize() <= storage_.Bytes(), matxInvalidSize,
+        "Total size of new tensor must not be larger than the original");
     return tensor_t<M, R, Storage, Desc>{storage_, std::move(new_desc), (M*)this->ldata_};
   }
 
