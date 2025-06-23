@@ -32,6 +32,7 @@
 
 #pragma once
 
+#include <type_traits>
 
 #include "matx/core/type_utils.h"
 #include "matx/operators/base_operator.h"
@@ -56,7 +57,7 @@ namespace matx
         cuda::std::array<shape_type, DIM> sizes_;
         cuda::std::array<int32_t, DIM> dims_;
         cuda::std::array<shape_type, T::Rank()> starts_;
-        StrideType strides_; // Add [[no_unique_address]] in c++20
+        typename std::remove_const<typename std::remove_reference<StrideType>::type>::type strides_; // Add [[no_unique_address]] in c++20
 
       public:
         using matxop = bool;
