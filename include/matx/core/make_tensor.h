@@ -732,11 +732,13 @@ auto make_tensor( TensorType &tensor,
       }
       break; 
     }
+#if DLPACK_VERSION >= 80
     case kDLBool: {
       [[maybe_unused]] constexpr bool same = std::is_same_v<T, bool>;
       MATX_ASSERT_STR(same, matxInvalidType, "DLPack/MatX type mismatch"); 
       break;
     }
+#endif
   }
 
   index_t strides[TensorType::Rank()];
